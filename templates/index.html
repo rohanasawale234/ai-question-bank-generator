@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Question Bank Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container pb-5">
+    <div class="header-section">
+        <h1 class="title">Question Generator</h1>
+        <p class="text-center text-muted mb-5">Generates a structured bank of study questions.</p>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card p-4 mb-4">
+                <form action="/generate" method="post" id="textForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa-solid fa-pen-nib me-2 text-primary"></i>Paste Content
+                        </label>
+                        <textarea name="text" class="form-control" rows="8" 
+                                  placeholder="Paste your chapter notes, articles, or raw text here..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 shadow-sm" onclick="showLoader()">
+                        <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Questions
+                    </button>
+                </form>
+
+                <div class="d-flex align-items-center my-4">
+                    <hr class="flex-grow-1">
+                    <span class="mx-3 text-muted small fw-bold">OR</span>
+                    <hr class="flex-grow-1">
+                </div>
+
+                <form action="/upload" method="post" enctype="multipart/form-data" id="pdfForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa-solid fa-file-pdf me-2 text-danger"></i>Upload PDF Material
+                        </label>
+                        <div class="input-group">
+                            <input type="file" name="file" class="form-control" accept=".pdf" required>
+                            <button class="btn btn-dark" type="submit" onclick="showLoader()">Upload</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            {% if questions %}
+            <div class="card p-4 shadow-lg sticky-top" style="top: 20px;">
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                    <h4 class="m-0 fw-bold">Question Preview</h4>
+                </div>
+                
+                <div class="question-list-container" style="max-height: 500px; overflow-y: auto;">
+                    {% for q in questions %}
+                    <div class="question-item animate-fade-in">
+                        <span class="badge bg-light text-dark border me-2">{{ loop.index }}</span>
+                        {{ q }}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-4 pt-3 border-top">
+                    <a href="/download-paper" class="btn btn-success w-100">
+                        <i class="fa-solid fa-download me-2"></i>Download PDF
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div class="card p-5 text-center text-muted opacity-50 border-dashed d-flex flex-column align-items-center justify-content-center" style="min-height: 400px; border: 2px dashed #cbd5e0;">
+                <i class="fa-solid fa-robot fa-4x mb-3"></i>
+                <h5>No Questions Generated Yet</h5>
+                <p class="small">Enter text on the left to start the AI process.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div id="loader" class="loader-overlay d-none">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+        <p class="mt-3 fw-bold">Gemini is analyzing your content...</p>
+    </div>
+</div>
+
+<script>
+    function showLoader() {
+        // Simple check to ensure form isn't empty
+        document.getElementById('loader').classList.remove('d-none');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pypdf
+reportlab
+google-genai
+python-multipart
+jinja2
