@@ -19,7 +19,7 @@ from google import genai
 # ---------- CONFIG ----------
 
 # 1. Replace with your key from https://aistudio.google.com/
-API_KEY = "AIzaSyBP2dAVCYIwrVXmVbevk2SPo_aLRd9k5co" 
+API_KEY = "YOUR-GEMINI-API-KEY" 
 
 # 2. Initialize the Client (Modern SDK way)
 client = genai.Client(api_key=API_KEY)
